@@ -1,0 +1,21 @@
+Video 1
+Naucicu kreiranje Komponenti, Express Router za API, Angular Router, Mongo DB Atlas - baza.
+Reactivne forme i HTTP, RXJS, Json Web Token,   Deploy on Heroku, Koriscenje PayPal
+
+Stvari koje cemo koristiti i trebaju se instalirati :
+
+Git,VSCode,NodeJs,Postman
+Angular Essentials - ekstenzija
+
+git git-scm.com
+
+Angular Essentials - Extension pack,Vise ekstenzija zajedno koje su dobre za rad sa Angularom i korisne
+
+
+Video 2
+
+kreiramo angular frontent  ng new frontend --skip-tests ja msm i Yes na Angular Routing posto cemo ga koristiti
+
+ng serve -o da otvori i browser odma sa localhost 4200
+
+rm -rf .git uklanjanje gita iz frontenda jer cemo ga imati na nivou cijele aplikacije
