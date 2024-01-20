@@ -1,4 +1,6 @@
-Video 1
+				
+				Video 1
+
 Naucicu kreiranje Komponenti, Express Router za API, Angular Router, Mongo DB Atlas - baza.
 Reactivne forme i HTTP, RXJS, Json Web Token,   Deploy on Heroku, Koriscenje PayPal
 
@@ -11,11 +13,86 @@ git git-scm.com
 
 Angular Essentials - Extension pack,Vise ekstenzija zajedno koje su dobre za rad sa Angularom i korisne
 
+CTRL SHIFT P - file icon theme - material icon theme koji smo dobili iz angular essentials za izgled
+fajlova
 
-Video 2
+
+
+
+				Video 2
 
 kreiramo angular frontent  ng new frontend --skip-tests ja msm i Yes na Angular Routing posto cemo ga koristiti
 
 ng serve -o da otvori i browser odma sa localhost 4200
 
 rm -rf .git uklanjanje gita iz frontenda jer cemo ga imati na nivou cijele aplikacije
+
+
+Video 3
+
+Dodavanje Headera, Generisanje Komponente, HTML i CSS 
+
+On dodao README.md
+
+ng g c components/partials/header
+
+
+Ctrl A za selektovanje cijelog koda
+
+rem i em su otprilike ista stvar samo se rem odnosi na root a em na trenutni roditeljski element
+
+Dodavanje CSS-a i HTML u header komponentu kao i u glavni style.css dodavanje fonta preko api.
+i nekih osnovnih css naredbi
+
+
+				Video 4
+
+Cilj - List Foods, Food Model, Data.ts,Dodati primjer hrane, Dodati slike kao atribut, Food service
+i Kreiranje Home Komponente , ts,html,css
+
+kreiramo shared folder jer ce tu biti vrv model ili nesto sto je sherovano izmedju komponenti
+
+kreiramo model Food
+id!  - oznacava da je id required
+tags? - oznacava opcioni parametar 
+
+Koristicemo sample data jer nemamo bekend trenutno i zato cemo koristiti data.ts
+ili ti sample foods to jest array od vise food modela koje cemo kasnije vrv iz baze podataka vaditi ili tako nesto
+
+Uzeo sam njegove podatke sa gita i slike, nakon toga kreiramo food service.
+
+ng g s services/food - preko terminala kreiramo servis
+
+Injectujemo servis preko construktora i kada smo u home komponentu dopremili food array
+krecemo sa ngFor da izlistavamo sve.
+
+<ul>
+    <li *ngFor="let food of foods">
+        <a routerLink="/food/{{food.id}}"></a>
+    </li>
+</ul> 
+
+a link ce biti link za svaki food id posebno gdje ce biti opsirnije opisani vrv. ( food details)
+
+<span class="favorite {{food.favorite?'' :'not'}}">  ako je food favorite true onda nista ako nije dodajemo not
+kao klasu
+
+npm install ng-starrating --force   - Paket koji cemo da koristim za zvezdice. Njega importujemo preko
+RatingModula u app modul
+
+
+				Video 5
+
+
+Cilj:  Search Foods,Dodavanje search metode u food service,search route,search result u home componenti
+i Generisanje search komponente njen ts html i css.
+
+Napravili smo metodu koja filtrira po food.name-u
+Onda smo napraviti rutu za search i stavili home componentu kao home rutu.
+
+
+
+
+
+
+

@@ -3,5 +3,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand&display=swap");
 
 * {
-    font-family: 'Quicksand', sans-serif;
+    box-sizing: border-box;
+    
   }
+
+html{
+    font-size: 16px;
+}
+
+html,button{
+    font-family: 'Quicksand', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
