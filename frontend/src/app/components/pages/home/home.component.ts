@@ -13,6 +13,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private foodService:FoodService) {
     this.foods = foodService.getAll();
+    })
   }
   
   ngOnInit(): void {
