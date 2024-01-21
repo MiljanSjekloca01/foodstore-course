@@ -1,5 +1,6 @@
-				
-				Video 1
+Kurs Total 7.5 h  / Trenutno  - 1h predjeno / Cilj danas 2.5 h / 11 videa 				
+
+				Video 1		
 
 Naucicu kreiranje Komponenti, Express Router za API, Angular Router, Mongo DB Atlas - baza.
 Reactivne forme i HTTP, RXJS, Json Web Token,   Deploy on Heroku, Koriscenje PayPal
@@ -89,6 +90,197 @@ i Generisanje search komponente njen ts html i css.
 
 Napravili smo metodu koja filtrira po food.name-u
 Onda smo napraviti rutu za search i stavili home componentu kao home rutu.
+
+ActivatedRoute je servis koji dolazi iz angular router,Servis activated route nam omogucava da dobijemo informacije
+o ruti, kao sto su parametri(searchParameter) 
+
+Subscribe znaci kad god se params promjene da se pozove funkcija
+
+activatedRoute.params.subscribe
+
+if(params.searchTerm)   izbacuje error ili staviti searchterm  u ["searchterm"] ili disablovati error
+u tsconfig.json stavimo noPropertyAccessFromIndexSignature na false
+
+
+#s - referenca u inputu iz koje mozemo da dovucemo vrednost input polja.
+Umjesto njega moze da se koristi [(ngModel)] ali ovako je jednostavnije. posto nama samo ta vrednost treba
+u pozivu funkcije koja se desava na klik dugmeta.
+
+#s - referenca se ne moze koristiti iz komponente samo unutar HTML sablona
+
+(keyup.enter)=""  - svaki put kad pritisnemo enter i pustimo ga poziva npr funkciju
+
+**** Mozda uraditi kad nema nicega u search i kad se klikne enter da vrati sve
+
+
+			
+				Video 6
+
+Cilj: Food Detail Page
+Dodavanje metode u food service
+generisati food page content dodati ga u rute, ts ,html i css
+
+
+.container > *{}   - sva djeca prvog nivoa od containera ce imati ovaj css
+
+ .price::before{
+    content: "Price: ";
+    color: darkgray;
+}
+
+- CSS pseudo element before za elemente sa klasom .price
+::before - da bi se dodao sadrzaj prije samog elementa.
+
+
+				Video 7
+
+
+Cilj: Tags Bar 
+Kreiranje tag modela, dodavanje sample tagova u data.ts 
+Dodavanje metoda povezanim sa tagom u food service
+Dodavanje tagove u rute
+Pokazati tag rezultate u home komponenti
+Generisati tag komponentu
+dodati je u home komponent,dodati ts,html,css
+
+{ path: "tag/:tag", component: HomeComponent}      : - oznacavaju da je tag parametar
+
+
+
+				Video 8
+
+
+Cilj:  Cart Page
+
+CartItem Model, Cart Model
+Cart Service, Add to cart button, Cart page component,route,ts,html,css
+
+Umjesto ovoga 
+import { Food } from "./Food";
+
+export class CartItem{
+    constructor(public food:Food){
+        this.food = food;
+    }
+   food!: Food; 
+    quantity:number = 1;
+    price: number = this.food.price;
+
+}
+
+Mozemo pojednostaviti i samo u kontruktoru staviti public 
+
+export class CartItem{
+    constructor(public food:Food){}
+    quantity:number = 1;
+    price: number = this.food.price;
+
+}
+ng g s services/cart - kreiranje cart servisa
+@Injectable({
+  providedIn: 'root'
+})
+
+- Je ekvivalentno stavljanju servisa u providers: u app module.
+
+RxJs    *** TIP pogledati video o observables,subject,behavioursubject od istog lika mozes.
+
+** BehaviorSubject je deo angularovog sistema za upravljanje stanjem,koristi se za djeljenje podataka
+izmedju komponenata ili servisa. ( Subject ) cuva trenutnu vrednost i obavestava sve svoje trenutne
+subscribere(pretplacenike) svaki put kad dodje do promene vrednosti.
+
+Treba da ima inicijalnu vrednost ( new BehaviorSubject.. ) 
+Cuva trenutnu vrednost pamti je i kada se neko prijavi ili subsc dobice poslednju sacuvanu vrednost.
+Svaki put kada se vrednost promjeni svi subscriberi ce biti obavesteni i dobijaju novu vrednost
+
+Pracenje vrednosti necega,i obavjestavanje subscribera po promjeni ali i zadrzavanje vrednosti.
+Subject npr nema inicijalnu vrednost i ne zadrzava vrednost.
+
+Znaci BehaviourSubject je mnogo fleksibilni i najcesce vise koristen
+
+Slicno Observable samo mozda unapredjen koncept.
+Samo sto Observable prati tok dogadjaja bez pamcenja.
+
+
+Definisanje metoda u cart servise za dodavanje u korpu,uklanjanja iz korpe,promjene quanity nekog
+itema,ciscenje korpe i
+ // Reagovanje na promene u korpi preko servisa.
+  // Nema manipulacije nad vrednostima
+  // Posto observable moze samo da se prati
+  getCartObservable():Observable<Cart>{
+    return this.cartSubject.asObservable();
+  }
+
+I Funkcije za cuvanje korpe u localstorage da se ne bi izgubili podatci na refresh
+
+
+
+
+			Video 9 
+
+Nastavak Cart page-a
+
+Cilj: ostaje isti ts,html,css koji nismo uradili 
+Kreiramo title komponentu kao parcijalni dio,i on ce biti na pocetku naseg karta
+
+@Input() - Dekorator koji se koristi kako bi se oznacila svojstva komponente koja prihvata vrednost
+preko atributa od roditeljske komponente.
+
+npr imamo komponentu kojoj je selektor app-child
+<app-child [message]="parentMessage"></app-child>   
+export class ChildComponent {
+  @Input() message: string;
+}
+
+Donekle input predstavlja atribute koje koristimo ili ti neka svojstva koja mozemo da promjenimo
+kada pozivamo selektor te komponente u roditeljskoj komponenti.
+
+ul li:last-child{   - gadjanje zadnjeg li elementa.
+    border:none;   
+}
+
+li div:not(:first-child){   -li div koji nije first child
+    
+}
+
+*** Prostudirati flex-grow, flex-shrink.
+
+flex-grow - rast - zauzimanje preostalog prostora
+ako imamo 2 elementa jedan ima flex-grow 2 drugi 1 prvi ce uzet duplo vise prostora od drugog
+isto tako i za smanjivanje moze kad se smanjuje da jedan element uzme vise drugi manji itd.
+
+checkout>div - samo prvu direktnu decu sa elementom klase checkout.
+checkout div - sve div elemente koji su potomci checkout
+
+na kraju u headerComponent dodajemo da Cart ima pravi broj pravi cartQuantity
+
+			
+				Video 10
+
+
+Cilj:
+Not Found Component ts html css,
+Dodavanje not found componente Na pages
+
+
+Not found component cemo imati u home i cart-page component a i u food page component.
+Isto cemo odratiti preko inputa,koristicemo inpute visible,message,resetlinkmessage,resetlinkroute.
+
+Korisno jer npr mozemo razlicite funkcije da stavljamo u cart page razlicite u home page
+npr u cartpage notFoundMessage moze biti Cart Page is Empty u home page Home Page is Empty npr.
+resetlinkRouter mozemo staviti da bude drugaciji kao i drugaciji nacin dolazenja do toga da li ce biti 
+visible ili nece.
+
+
+Not Found u cart-page kad nema nijedna dodata hrana u cart.
+Not found u food-page kada food id ne postoji.
+Not Found u home page kada searchujemo hranu koje nema.
+
+
+
+
+
+				Video 11
 
 
 
