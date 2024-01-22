@@ -12,7 +12,6 @@ import { Tag } from 'src/app/shared/models/Tag';
 export class HomeComponent implements OnInit {
   
   foods: Food[] = [];
-  tags: Tag[] =[];
 
   constructor(private foodService:FoodService,activatedRoute:ActivatedRoute) {
     activatedRoute.params.subscribe( (params) => {
