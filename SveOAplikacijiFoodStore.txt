@@ -283,6 +283,151 @@ Not Found u home page kada searchujemo hranu koje nema.
 				Video 11
 
 
+Cilj: Connecting to Backend.
+Kreiranje bekend foldera. cd backend nakon toga npm init -y i dobijamo package.json samo
+nakon toga treba da skinemo typescript npm install typescript.
+
+Nakon sto smo to uradili dobijamo node module i package lock json. Treba da napravimo novi file
+tsconfig.json u njega ubacujemo neke one time config koji nije striktno znati.
+
+ali outDir - dje ce built javascript fajlovi biti locirani.
+include valjda govorimo da ce svi typescript fajlovi od src biti transpilovani u javascript.
+
+Create .gitignore da git ignorujemo promjene kao sto su node_modules, tako sto u gitignore napisemo
+node_modules.
+
+Kopiranje data.ts u backend src i mjenjamo ih u any[] posto nemamo pristup food modelu i tag modelu.
+
+Instaliranje express cors   npm install express cors.
+CORS(Cross-Origin Resoursce Sharing) middleware u Express.js . U NodeJs Cors je bezbednosni mehanizam
+koji ogranicava web resurse,kao sto su fontovi,javascript i druge vrste resursa. da budu pozvvani iz drugih domena
+osim onog sa kog su orginirani.
+
+
+Sve skinute se nalazi u dependencies u package.json.
+
+Kreiramo server.ts gde cemo importovati express. prilikom kucanja importa import express from "express";
+Dobijamo error da nisu skinuti types/express koje mozemo pritiskom na solution da skinemo.
+
+i onda u devDependencies mozemo da nadjemo @types/express. I imacemo vise typova koje treba skinuti
+import cors from "cors"; - opet install.
+
+
+Cors je generalno potreban zato sto cemo imati dvije localhost adrese prva je localhost:4200 gdje je angular
+a druga je localhost:5000 dje ce biti nas bekend.I zato je to valjda samo za vrijeme developmenta.
+
+app.use(cors({
+    credentials:true,
+    origin:["http://localhost:4200"]
+}))
+
+Ovom linijom koda govorimo expressu da koristi kors da ce imat requestove sa localhost:4200 i da koristi credentials.
+to jest da ce kredentials biti poslati.
+
+Posto koristimo typescript moramo u bekendu da installirano  npm install ts-node --save-dev.
+Takodje postoji i nodemon koji ce da ubrza development valjda i njega cemo koristiti.
+
+Ts-node omogucava izvrsavanje TypeScript koda direktno iz Node-js bez potrebe za prethodnom kompilacijom
+u Javascript.
+
+Nodemon je alat za automatsko pracenje promena u fajlovima i ponovo pokretanje aplikacije nakon sto se detektuju
+promene.Koristan tokom razvoja jer omogucava automatsko osvezavanje servera ili aplikacije.Bez nodemona
+morali bi rucno zaustavljati i ponovo pokretati server nakon svake izmene.
+
+npm install nodemon --save-dev  ili mozda moze oboje sa npm install --save-dev nodemon ts-node.
+
+Nakon toga u package.json u scripts iznad tests dodajemo 
+"start": "cd src && nodemon server.ts", Da bi se znalo da pokrecemo ts code pomocu ts-node i da pratimo
+preko nodemon.
+
+** I Da bi pokrenuli Server koristimo   npm start 
+
+JSON Formater - Extenzija google za json formatiranje.
+
+Jedan primer get app.get("/api/foods", (req,res) => {
+    res.send(sample_foods);
+})
+
+Pravimo get metode i uz pomoc onih metoda u food service.
+
+
+Ovako je izgledalo dobavljanje podataka u part 1 konektovanju sa bazom preko api.
+/* 
+
+app.get("/api/foods", (req,res) => {
+    res.send(sample_foods);
+})
+
+app.get("/api/foods/search/:searchTerm", (req,res) => {
+    const searchTerm = req.params.searchTerm;
+    const foods =  sample_foods
+    .filter(food => food.name.toLowerCase()
+    .includes(searchTerm.toLowerCase()));
+    res.send(foods);
+})
+
+app.get("/api/foods/tags", (req,res) => {
+    res.send(sample_tags);
+})
+
+app.get("/api/foods/tag/:tagName", (req,res) => {
+    const tagName = req.params.tagName;
+    const foods = sample_foods
+    .filter(food => food.tags?.includes(tagName));
+    res.send(foods);
+})
+
+app.get("/api/foods/:foodId",(req,res) => {
+    const foodId = req.params.foodId;
+    const food = sample_foods
+    .find(food => food.id == foodId);
+    res.send(food);
+})
+
+*/
+
+
+				Video 12
+
+
+Cilj:   Cilj je da sva hrana dolazi iz bekenda.Na home page food page.a ne iz data.ts sa frontenda.
+
+Dodavanje urls.ts na frontend. dodajemo const BASE_URL = "http://localhost:5000";
+a kad dodamo na pravi server bice ImeAplikacije.::::.com
+
+u urls.ts Dodajemo konstante / url-ove npr FOODS_URL,foodBySearchUrl...
+
+-Nakon toga dodavanje HtppClient Modula u app module.
+
+-Nakon toga updejtovanje Food Servisa. Posto HTTP client valjda salje observable a ne 
+raw data kao sto je food moramo da promjenimo kod u food service.
+
+i sada getAll metoda izgleda ovako.
+  getAll(): Observable<Food[]>{
+    return this.http.get<Food[]>(FOODS_URL);
+  }
+
+Nakon sto se izmjenjaju sve metode prilagode metodama na bekendu.
+Moramo da izmenjamo i upotrebu tih metoda u komponentama.
+
+U home page komponenti smo napravili observable jer ima vise this.foods 
+a na druge komponente.
+
+Nakon ovoga svi podatci o hrani i tagovima dolazi iz bekenda.
+
+
+
+			Video 13
+
+
+
+
+
+
+
+
+
+
 
 
 
