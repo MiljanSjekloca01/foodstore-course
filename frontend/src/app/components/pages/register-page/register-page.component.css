@@ -10,18 +10,12 @@
     width:28rem;
 }
 
-form{
+
+.login{
     display:flex;
-    flex-direction: column;
     justify-content: center;
 }
 
-.register{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.register a{
+.login a{
     color: #e72929;
 }

@@ -621,20 +621,214 @@ i dodamo validatore za njega npr da je required i to je to.
 
 
 
+Cilj: 
+Connect Login API to MongoDB Atlas.
+Kreiranje MongoDB Atlasa,
+Kreiranje .env fajla
+Instaliranje 
+	mongoose,
+	dotenv
+	bcryptjs
+	jsonwebtoken
+	express-async-handler
+Konektovanje na MongoDB Atlas.
+Koriscenje MongoDB podataka umjesto data.ts in apis.
+
+Pomjeranje API u Routers folder.
+
+Napravicemo router folder u backend folder i tu cemo storovati sve api za food u food router
+sve api za ... u taj router itd. Za to cemo sve app funkcije koje su related za food prebaciti u 
+food.router.ts a tamo cemo koristiti Router iz expressa koji se samo inicijalizuje kao const router = Router()
+i umjesto app.get koristicemo router.get.  i samo exportujemo default router da bi mogli da koristimo u server.ts
+
+I da bi to sve funkcionisalo vratimo se nazad u server.ts i uradimo app.use("/api/foods",foodRouter).
+Rutu i importujemo foodRouter iz putanje.
+
+Kreiranje MongoDB Atlasa i zasto ga koristimo a ne lokalni mongoDb, mongodb atlas je usluga clouda
+koju pruza MongoDB kao servis. ( Lokalno dosta zavisi od lokalne masine) 
+Odrzavanje i bezbednost su potpuna odgovornost korisnika,sigurnosne postavke verzije MongoDB.
+MongoDB Atlas pruza ugradjene alate za sigurnost,enkripcija podataka u mirovanju i tokom prenosa.
+integrisanu autentifikaciju,kontrolu pristupa, automatsko azuriranje baze podataka.
+
+i MongoDB Atlas je dovoljno dobar za development proces.
+
+Za password smo koristili autogenerate secure pass.
+
+MongoDB Atlas free varijanta.
+
+Uglv kreirali smo database, stavili za network da moze svako da pristupi sa bilo kojom ip adresom(u produkciji ne)
+I uzeli smo connection string iz database sa kojim cemo se konektovati. 
 
 
+.env - Ne zelimo da saljemo credentials u nas git repository. ( cuvanje konfiguracionih fajlova ili tajnih kljuceva)
+API kljucevi lozinke ili druge postavke koje ne zelimo deliti javno.Unutar njega stavljamo MONGO_URI gdje
+stavljamo connection string i umjesto <password> stavljamo pravi password.
 
 
+OffTopic: * Heroku,Netlify,itd.. sluze za postavljanje demo verzije aplikacije na cloud platformi.
+
+Instaliranje: 
+
+bcryptjs - za cuvanje sifri unutar baze podataka.
+express-async-handler : Async Handler.
+
+npm install mongoose dotenv bcryptjs express-async-handler Za instaliranje svega odjednom.(jwt smo vec skinuli)
+
+sad ako ocemo da pristupamo .env fajlovima to mozemo ovako da uradimo (server.ts fajl) 
+import dotenv from 'dotenv';
+dotenv.config();
+process.env.MONGO_URI;
+
+Kreiranje configs foldera gde ce biti konfiguracije za povezivanje sa bazom podatka.
+i kreiramo database.config.ts  gde cemo prvo importovati ConnectOptions i connect iz mongoose.
+
+ConnectOptions interfejs koji dolazi iz mongoose,
+connect default funkcija koja se koristi za konektovanje sa bazom podataka isto iz mongoose.
+
+connect funkcija vraca Promise i zato koristimo then funkciju da kada se funkcija zavrsi to jest Promise bude resen
+"ispunjen" sta treba da se desi.
+
+.then onda ima dva argumenta sta se desi kada konekcija bude ostvarena(promise ispunjen) druga kada 
+se konekcija ne desi to jest promise bude odbijen.
+
+Nakon toga treba u server.ts da importujemo i pozovemo funkciju.
+U novijim verzijama vrv ne treba useNewUrlParser i useUnifiedTopology.
+//deprecated
 
 
+Sada kada smo uspostavili konekciju sa bazom(Connection succesfully) kreiramo models folder u bekendu
+i food.model.ts ( Mongoose model ) 
+
+Interface + Schema + Model.
+
+Interface Food slican food classi u frontendu samo posto je interface nema required ili optional.
+
+exportujemo const FoodSchema koja ce biti tipa new Schema<Food> interfejsa food i tu definisemo kako
+ce dokumenti izgledati u kolekciji MongoDB baze podataka.(Definicija strukture dokumenata,podatci i vrste podataka)
+
+Koristicemo Virtuals u Mongosose da bi definisali polja u modelu koji se ne cuvaju direktno u bazi podataka
+ali se mogu koristiti kao da jesu. ( mislim da to radimo da bi dobili id 
+
+Dok kreiramo schemu mozemo koristiti nekoliko opcija kao drugi argument u konstruktoru sheme.
+Mi cemo koristiti
+
+toJSON  sa virtuals:true - Omogucava ukljucivanje virtuelnih polja u rezultujuci JSON kada se dokument pretvara
+u json format.
+
+toObject sa virtuals:true - Isto kao i toJSON ( manipulisanje dokumentom prije nego sto ga saljemo klijentu)
+
+timestamps: true - Mongoose automatski dodaje dva polja u dokumente createdAt i updatedAt koja cuvaju informacije
+o tome kada je prvi put kreiran i kada je zadnji put updejtan.
+
+Nakon toga treba da kreiramo Mongoose Model. ( export const FoodModel = model<Food>('food',FoodSchema); )
+
+A taj model ce se koristiti za interakciju sa MongoDB bazom podataka,on ima sve metode koje su ugradjene
+u Mongoose model ( find , findById , create ,update ) .
+
+Takodje kreiramo i model usera ( interfejs,schema,model) 
+
+Nakon toga ocemo da uradimo seeding podataka odnosno dodavanje pocetnih podataka u bazu podataka
+povezanu sa FoodModel.
+
+asyncHandler - rad sa asinhronim funkcijama(import iz express-async-handler).
+sa await FoodModel.countDocuments() - proveravamo da li vec ima dokumenata u kolekciji povezanoj sa foodmodel.
+Ako postoji znaci da je seeding vec uradjen ako ne onda se koristi FoodModel.create metoda za dodavanje pocetnih
+podataka. Znaci seeding radimo tako sto odemo na localhost:5000/api/foods/seed 
+
+Sada vrijeme je da umjesto dobavljanja podataka iz sample_foods i sample_users u routerima stavimo da se
+oni uzimaju iz baze podataka i to cemo uraditi isto preko asyncHandlera zato sto
+
+router.get("/", async (req,res) => {
+    const foods = await FoodModel.find();
+    res.send(sample_foods);
+})
+
+Ovakav kod rezultuje u inconsistent behaviour, i zato sto je bolje koristiti async.
+I zato sto bi morali da dodajemo try/catch za errore.
+Zato sto express ima error handling middleware
 
 
+I onda mjenjamo funkciju po funkciju.
+Prvo search - koristimo search regex koji uzima parametre koji su ukucani i koristimo,"i"  kao drugi parametar
+(case-insensitive),nakon cega pravimo konstantu foods koja ce awaitovati foodmodel.find({name: {$regex: searchRegex}})
+to jest aplicirace regex nad poljem ime u foodmodelu i vratiti sva rijesenja.
+
+Drugo Tags  - koristimo const tags = await FoodModel. ali koristimo aggregate ne find .aggregate([ {
+i koristimo $unwind:'$tags' } ])
+
+aggregate - je metoda koja omogucava MongoDB upitima kompleksnu manipulaciju podataka u okviru kolekcije
+omogucava da se definise niz faza (stadijuma) koji se primenjuju na dokumente u kolekciji kako bi se izvrsite
+razlicite operacije agregacije.
+
+( Svaka faza moze biti razlicita operacija kao sto su $match, $group, $sort, $project, $unwind .. )
+I primena tih faza jedna za drugom ( kompleksna analiza podataka i dobijanje zeljenih rezultata)..
+
+Mi koristimo : 
+
+$unwind: "$tags" - 
+Znaci ako imam npr 2 Food koji imaju po 3 taga rezultat unwinda ce biti
+6 Food-ova sa po jednim tagom.
 
 
+*** Sa njegovog comita sam uzeo ovaj dio nije prikazao na video a ispravlja gresku oko logina.
+
+const generateTokenResponse= (user : User) => {
+    const token = jwt.sign({
+      email:user.email, isAdmin: user.isAdmin
+    },process.env.JWT_SECRET!,{
+      expiresIn:"30d"
+    });
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      address: user.address,
+      isAdmin: user.isAdmin,
+      token: token
+    };
+  }
+
+_____
+
+*** Ispratiti sta radi sa tokenom i dalje posto ga nismo u bazi ubacili..
+
+			
+				
+				Video 17
 
 
+Cilj:   Register User, Register Api , Register Service Method , Register Link i Register Component.
+
+1. U user.router kreiramo register api.  Prvo projevaramo da li user sa takvim emailom vec postoji, nakon toga
+moramo da enkriptujemo sifru a to radimo tako sto importujemo bcrypt iz bcryptjs-a i instaliramo types od njega.
+
+2. Frontend - UserService pravimo register funkciju slicnu login funkciji.
+
+3. Kreiramo register page component, form builder za njega gde cemo kreirati svoj validator sopstveni.
+Koji ce provjeravati da li su sifra i confirmSifre isti. Validators novi folder.
+
+Register html pravimo text inpute za polja. default button za register.
+
+&nbsp;  - non breakable space u Angular template html .
+
+Dodajemo linkove za login i register page na kraju forme.
+
+Takodje dodajemo notMatch i minlength u VALIDATORS_MESSAGE (input-validators komponent).
+za prikazivanje message ako se ne ispunjava uslov.
 
 
+Video 25 -   Prelazimo na video 25 jer je napravio neku gresku da kada se registrujemo ne mozemo da se loginujemo posle.
+A razlog greski je bio to sto kad se registruje korisnik sifra se enkriptuje pa moramo da isto uradimo kad je login u pitanju.
 
+
+				
+				Video 18  Loading Page - Preskacemo 
+
+				Video 19 
+
+Cilj: Checkout Page
+Kreiranje Order Modela, Kreiranje Checkout Page komponente, Dodavanje u Ruter, Dodavanje usera u user service,
+Dodavanje Korpe u korpa servis, Kreiranje Order Items List komponente za sgladistenje svih ordera.
 
 

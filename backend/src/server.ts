@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from "express";
 import cors from "cors";
-import { sample_foods, sample_tags, sample_users } from "./data";
-import jwt from "jsonwebtoken";
-
+import foodRouter from './routers/food.router';
+import userRouter from './routers/user.router';
+import { dbConnect } from './configs/database.config';
+dbConnect();
 const app = express();
 app.use(express.json())
 app.use(cors({
@@ -10,9 +13,9 @@ app.use(cors({
     origin:["http://localhost:4200"]
 }));
 
-    user.token = token;
-    return user;
-}
+app.use("/api/foods",foodRouter);
+app.use("/api/users",userRouter);
+
 
 // port koji koristimo,
 const port = 5000;
