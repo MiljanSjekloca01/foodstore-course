@@ -1,4 +1,4 @@
-Kurs Total 7.5 h  / Trenutno  - 1h predjeno / Cilj danas 2.5 h / 11 videa 				
+Kurs Total ~ 8 sati			
 
 				Video 1		
 
@@ -418,6 +418,211 @@ Nakon ovoga svi podatci o hrani i tagovima dolazi iz bekenda.
 
 
 			Video 13
+
+Cilj: Login Page - front - back
+
+Login Page generisanje komponente,route,ts,html,css,Reactive Forms Module.
+
+Koriscenje FormGroup u ts + koriscenje formBuildera u konstruktoru koji olaksava rad sa formgroup
+
+Takodje koriscenje Validators iz Angulara za validiranje.
+
+Znaci u Angularu FormGroup i FormBuilder su deo Reactive Forms modula koji omogucava efikasno
+upravljanje formama u Angular Aplikaciji.
+
+A da bi mogli loginForm koji je tipa formGroup koristiti u html-u moramo da importujemo ReactiveFormsModule
+( sve ovo dolazi iz angular/forms ) 
+
+Nakon sto smo zavrsili izgled login komponente dodajemo i Login API.
+Takodje i koriscenje JSON, JsonWebTokena, Testiranje Pomocu Postmena.
+
+prva post api metoda.
+
+app.post("/api/users/login", (req,res) => {
+    const body = req.body;
+})
+
+Problem je sto se ovo salje kao json a Express ne koristi json kao default. 
+i zato u server.ts dodajemo jos i app.use(express.json())
+
+u Data.ts cemo dodati neke Sample_usere (sample_users)
+
+Da bi koristili JsonWebToken moramo da ga instaliramo na bekend. 
+Preko komande - npm install jsonwebtoken i da ga importujemo u server.ts i takodje isntaliramo
+kao types.
+
+proces generisanja tokena je sign  jwt.sign(); koji ima 3 argumenta.
+
+-Prvi argument je payload  - sta zelimo da enkodiramo npr email u ovom sllulcaju.
+- Drugi arugment je - secret ili private key string. ( sa njim moze da se dekoduje token)
+- Treci argument je -  options opcije npr expiredTime expiresIn
+
+app.post treba kao response ako je dobro da vrati token response ili ti jwttoken.
+ako nije code 400 sa porukom sta je poslo po zlu.
+
+Za testiranje ovoga koristicemo Postman.
+Koristimo post request sa localhost:5000/api/users/login
+Body Json { "email":"jane..", "password":"..."} i ako takav user postoji u data.ts vratice code 
+200 i podatke o user-u sa njegovim tokenom.
+A ako ne postoji code 400 i poruku da Email ili password nisu validni
+
+
+			
+			Video 14
+
+Cilj: 
+Treba da povezemo login componentu na frontend sa login api-om.
+A to cemo uraditi tako sto cemo generisati User Service, User model, User subject.
+login metode,local storage metode,logout metoe,itd....
+
+
+u userService kreiramo novi userSubject tipa BehavioourSubject<User> on moze da ima 
+read i write mode u njemu ali mi ne zelimo da ista van userService da koristi write unutar
+User objekta.
+Zato kreiramo userObservable koji ce koristiti userSubject.asObservable();
+da bi imali nesto sto je samo readOnly.
+
+Koristicemo i interface user Login a glavna razlika izmedju interfejsa i klase je da sa interfejsom
+ne mozemo kreirati novu instancu i po defaultu svi podatci u Interfejsu su required zato se ne
+koristi ! ili ?. (  za interfejse u shared kreiramo novi folder interfaces dje cemo stavljati sve interfejse)
+
+kod http.post uvek moramo pored url da posaljemo i body.
+Ako bi koristili subscribe na return kod login metode onda bi promjenili tip returna u Subscribtion a ne ObservableUser
+zato koristimo pipe koji ne mjenja povratni tip a on ima neke svoje operatore
+kao sto su tap i next.
+
+tap je operator koji se koristi kada zelite pogledati ili izvrsiti neku akciju bez izmena na samom
+toku podataka.
+
+next se obicno koristi kao callback funkcija koja se poziva kada se emituje sledeca vrednost u toku
+podataka.Ili u ovom slucaju Happy Massage uspjesni message ?
+
+error se koristi za definisanje callback funkcije koja se poziva kada se desi greska u toku podataka.
+
+callback funkcija je funkcija koja se prosledjuje kao argument drugoj funkciji i poziva se nakon
+izvrsavanja te druge funkcije.
+
+Za uspjesno loginovanje koristicemo ngx-toastr  poruku  a da bi to uradili moramo da importujemo
+u modulu,importujemo browserAnimationsModule i dodamo stil u angular.json.
+Ali prije toga svega treba prvo da ga instaliramo na front - npm install ngx-toastr.
+
+Ovde moze doci do greske zbog verzija ng-toastr koja radi sa posebnom verzijom angulara.
+Npr u ovom trenutku nisam mogao da skinem jer zadnja verzija ngx-toastr radi samo sa angular 16
+
+zato treba da skinemo odredjenu verziju koja radi sa Angular 15 npm install ngx-toastr@^15.2.0
+ni to nije proslo pa sam uradio
+npm install ngx-toastr --force  ( npm install ngx-toastr --save --force ) i uspjelo je sa warning-s
+
+Znaci dodajemo ToastrModule i BrowserAnimationsModule.
+I takodje moramo u angular.json u styles da dodamo  "node_modules/ngx-toastr/toastr.css" ispod
+glavnog css.
+
+Takodje u appmodule toastrModule-u mora da se doda ovo
+   ToastrModule.forRoot({
+      timeOut: 3000,    // vrijeme zadrzavanja
+      positionClass:"toast-bottom-right", // klasa definisana u css toastr.css za position
+      newestOnTop:false  // cuvanje proslih poruka 
+    })
+
+Return url uglv sluzi da nas vrati na poslednju aktivnu rutu ja bi rekao. 
+Uglv da nas nakon uspjesnog submitovanja ili neuspjesnog redirektuje.
+
+Malo konfuzniji video.(13-15 minut). Nakon sto je submit gotov treba restartovati angular frontend server
+Zato sto kad se mijenja angular.json mora da se restartuje server.
+
+Nakon sto smo uspjeli da prikazemo poruke nakon uspjesnog submita treba i da prikazemo
+toastr nakon neuspjesnog logina to jest kad prodje frontend provjere a ne bekend da postoji user
+sa takvim parametrima.
+
+Treba negde da sacuvamo tog usera sto se loginovo a to cemo uraditi u localstorage.
+
+nakon sto napravimo set i get user local storage metode mozemo za userSubjecta da stavimo da je on
+novi getUserFromLocalStorage posto ako ga nema pice samo new User kao i prije
+
+Nakon sto smo to uradili vrijeme je da iz Headera Hardkodovanog imena zamjenimo sa 
+Pravim loginovanim userom(Njegovim imenom).To smo uradili tako smo se se subscribovali
+na userService.userObservable i stavljamo da je trenutni user taj zadnji user.
+
+nakon toga u userService dodajemo logout funkciju koju cemo da upotrebimo u header komponenti.
+
+*** koliko sam skontao servise konstruktora ne mozes da koristis van konstruktora ako ne dodas private.
+
+
+
+				Video 15
+
+Cilj: Valjda -  Razdvajanje login page na componente
+Pravljenje komponenti za login page,
+input container,input validation, text input, default button.
+
+Pravimo input container komponentu koja ce imati label i background color.
+imacemo u html ng-content tag novi tag u koji ce da se projektuje kontent koji budemo 
+stavili izvan nje to jest u drugoj komponenti kad budemo koristili selektor ove komponente.
+To jest bilo sta sto stavimo izmedju selektora komponente ce se smatrati kao da je unutar ng-contenta.
+
+Zatim kreiramo posebnu komponentu za error Message kod logina.
+Input-Validation.
+Takodje koristimo Inpute() i AbstractControls kao tip koji dolazi iz angular forms koji je isti tip
+kontrole kao sto imamo vec u login page.
+
+Dodavanje Object.keys,ngOnChanges 
+
+Object.keys() - funkcija kada zelimo da radimo sa kljucevima objekta, i kad je potreban niz tih kljuceva.
+
+ngOnChange je Angular hook koji se poziva svaki put kada se vrednost input propertija komponente promene
+omogucava da se reaguje na te promene i izvrse odredjene akcije.
+
+changes objekat sadrzi promene u ulaznim svojstvima. ( instanca tipa SimpleChanges koji sadrzi informacije o prethodnoj
+i trenutnoj vrednosti svojstva)
+
+Sada zelimo da input-container input i input-validation stavimo sve u jednu komponentu.
+A to je Text Input Componenta.
+
+
+Nova stvar koju smo tamo naucili takodje dodajemo inpute ali sada imamo kod imputa tip koji moze biti
+@Input()
+  type: "text" | "password" | "email" = "text"; 
+
+Samo text password ili email a default je text.
+
+input::placeholder u css mjenjanje placeholdera.
+
+Nakon sto smo zavrsili TextInput koji je sjajan feature jer je sad dodavanje novih elemenata poprilicno lako.
+pravimo i default button.
+
+DefaultButton - To mi nije jasno bas zasto ali pravimo i komponentu samo za button.
+Kod njega dodajemo dosta inputa i jedan novi Output()
+@Output() - koristimo jer je button i jer moramo da mu damo onclick event i da bi poslali event 
+moramo da koristimo output.
+
+
+ [ngStyle]="{
+        color:color,
+        'background-color':bgColor,
+        'font-size.rem':fontSizeRem,
+        'width.rem':widthRem
+    }"
+
+' ' - moramo jer imaju - kod font size i background color i takodje jer imamo .rem koji pokazuje koji unit se
+koristi.
+
+Sad npr ako ocemo da dodamo novo polje za login sve sto treba da uradimo je 
+   <text-input
+            [control]="fc.username"
+            [showErrorsWhen]="isSubmitted"
+            type="text"
+            label="Username"
+            ></text-input>
+i dodamo validatore za njega npr da je required i to je to.
+
+
+				
+				Video 16 Najbitniji cas. Uvodjenje MongoDb
+
+
+
+
+
 
 
 
