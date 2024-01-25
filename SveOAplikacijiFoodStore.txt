@@ -930,5 +930,32 @@ vise.
 				Video 22
 
 
+Cilj: Paymant Page, generisanje komponente, dodavanje getOrderForCurrentUser api
+Add Order Service method,
+Konektovanje komponente na servis.
+Napraviti map komponentu readonly.
+
+Kreiranje PaymentPage,dodavanje route u app.routing.module sa AuthGuardom,
+Kreiranje api-ja za getOrderForCurrentUser unutar order.router.ts
+Nakon toga kreiranje funkcije unutar order.service
+
+Uglv cijela poenta payment page je da je read only 
+
+
+				Video 23
+
+Cilj: Adding paypal, Generate Component. Dodavanje u Payment page,
+Get paypal client id , Dodavanje Paypal JS u index.html, Paypal button , Pay api to order router.
+
+1. generisemo komponentu paypal-button
+Kreiramo paypal developer account da bi uzeli njihov default app i default account i u index html
+<script src="https://www.paypal.com/sdk/js?currency=USD&client-id=AVjAhYO3Jhuj0NC2aqj7sLSJ8yaHZ8UhePux7jNy4VwA2Ta2M_ShiBf8YW43ZMHZOdp7CWCKRQde91Vx"></script>
+povezali preko scripta
+
+Koristimo developer paypal personal account da napravimo payment i nakon sto to uradim u bazi se updejtuje podatak
+orders. Dobijemo payment.id dobijemo status Payed
+
+
+				Video 24 - Nije bitno za sada pogledati.
 
 
