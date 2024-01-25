@@ -823,12 +823,112 @@ A razlog greski je bio to sto kad se registruje korisnik sifra se enkriptuje pa 
 
 
 				
-				Video 18  Loading Page - Preskacemo 
+				Video 18 
+
+Cilj: Loading, Dodavanje Image,Loading Componente,Loading Service,Loading interceptor
 
 				Video 19 
 
 Cilj: Checkout Page
 Kreiranje Order Modela, Kreiranje Checkout Page komponente, Dodavanje u Ruter, Dodavanje usera u user service,
 Dodavanje Korpe u korpa servis, Kreiranje Order Items List komponente za sgladistenje svih ordera.
+
+
+1. Kreiranje Order modela na frontendu.
+2. Generate Checkout Page Component
+
+Kreiranje getCart()  - za dobijanje zadnje vrednosti carta u cart service
+Kreiranje currentUser - za dobijanje trenutnog usera u user service
+
+Kreiranje Form Grupe za user name i addres,uzimanje podataka iz korpe i uzimanje podataka o useru.
+
+Kreiranje Order-list-componente u partials kao dio nase checkout page componente.
+koja ima input ordera.
+
+flex-wrap: wrap; prelazak u novi red kad se predje dostupan prostor
+
+
+				Video 20 
+
+Cilj: Dodavanje Mape na CheckoutPage.
+Dodavenj Leaflet npm package  npm install leaflet --save --force  (JS library)
+Dodavanje types/leaflet
+Dodavanje css to angular.json 
+
+Dodavanje AddressLatLng u Order Model. (frontend)
+Kreiranje Map komponente u checkoutpage,html,css,ts
+
+Iskreno malo konfjuzing tf ako budem htio bolje da skontam pogledaj opet.
+
+ #ffffff7c;  - 2 stvari posle boje oznacavaju da li je npr transparent i tako to.
+
+Kreiramo location service
+
+Auth Guard
+
+dodajemo ga tako sto u frontend u terminal ukucamo
+ng g guard auth/guards/auth  
+pritisnemo CanActivate.
+
+zatim u app.routing.module dodajemo za checkoutcomponent pored component:
+zarez i canActivate: [AuthGuard] 
+
+i koristimo Auth Guard zato da ako user nije loginovan to jeste ako nema token ne moze
+da pristupi checkout page-u.
+
+
+			Video 21 
+
+
+Cilj: Saving Order kad se ide na Payment.
+Dodavanje Order Modela na bekendu,Dodavanje Order Statusa Enum, Dodavanje Auth middleware
+Dodavanje Order Router, Create API
+Dodavanje Order Urls to url.ts
+Dodavanje Order Service, Dodavanje create metode
+Dodavanje Auth Interceptora.
+
+Kreiranje Order modela na bekendu ( ja sam trenutno bez lat i lng jer nisam mapu dodo)
+Kreiranje OrderItem modela na bekendu 
+
+virtuals zapravo koristimo da bi imali id polje a ne _id polje valjda.(najvaznije zasto)
+
+Nakon sto smo zavrsili sa modelima Ordera.
+Kreiramo order.router.ts
+
+Moramo da dodamo i middleware koji ce da proverava da li je user authorizovan.
+Moramo u generateTokenResponse u userRouter takodje dodati id jer nam treba u order.router
+
+Nakon sto smo zavrsili sa create api za order.router na bekendu.Moramo ga konektovati na server
+server.ts dodajemo app.use
+
+Nakon sto ga imamo na serverskoj strani treba da ga konektujemo na frontend.
+Nakon sto dodamo URL-ove za Order.
+
+Treba da kreiramo order.service.
+gde kreiramo create funkciju koja vraca http.post zahtev.
+ali ona nece raditi zato sto sada treba da posaljemo i acces_token 
+Zato moramo da dodamo interceptor
+
+Interceptor ce biti zaduzen za informaciju o acces_tokenu.
+A interceptori se koriste za hvatanje i manipulaciju http zahteva ili odgovora pre nego sto stignu do koda
+koji je odgovoran za njihovu obradu.(Korisno za dodavanje ili manipulisanje header zahteva,dodavanje tokena
+za autorizaciju,itd..)
+
+Moramo ga dodati u app.module.ts u providers
+
+Nakon toga moramo u checkoutPageComponent u createOrder moramo da budemo konektovani na order service
+a ujedno treba i jos jedna validacija za addressLatLng koji ja jos nemam.
+
+
+*****IMPORTANT u user.router i u auth.mid mi fali JWT_SECRET
+****IMPORTANT od kad smo ubacili fix za login dje se compare password ne mogu oni predefinsani da se loginuju
+vise.
+***IMPORTANT Kada nesto dodas u Angular JSON jos jednom moras restartovat frontend server
+
+
+
+				Video 22
+
+
 
 

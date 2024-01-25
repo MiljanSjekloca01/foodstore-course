@@ -20,6 +20,11 @@ export class UserService {      // newUser() ako ga nema u localStorage
     this.userObservable = this.userSubject.asObservable();
 
   }
+
+  public get currentUser():User{
+    return this.userSubject.value;
+  }
+
   // saljemo url i body.
   login(userLogin:IUserLogin):Observable<User>{
     return this.http.post<User>(USER_LOGIN_URL,userLogin).pipe(
@@ -40,6 +45,7 @@ export class UserService {      // newUser() ako ga nema u localStorage
     );
   }
 
+  
   register(userRegister:IUserRegister):Observable<User>{
     return this.http.post<User>(USER_REGISTER_URL,userRegister).pipe(
       tap({

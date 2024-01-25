@@ -48,6 +48,10 @@ export class CartService {
   getCartObservable():Observable<Cart>{
     return this.cartSubject.asObservable();
   }
+
+  getCart(): Cart{
+    return this.cartSubject.value;
+  }
   
   // Svaki put kad refreshamo page cart ce biti maknut ili ti ociscen
   // Da bi ostali podatci o korpi koristimo localstorage
@@ -69,6 +73,7 @@ export class CartService {
     const cartJson = localStorage.getItem("Cart");
     return cartJson ? JSON.parse(cartJson) : new Cart();
   }
+
 
   
 }
