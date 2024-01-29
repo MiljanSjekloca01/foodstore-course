@@ -2,7 +2,7 @@
 "name": "foodstoresrbms",
 "version": "1.0.0",
 "engines": {
-  "node": ">=18 <21"
+  "node": ">=18"
 },
 "scripts": {
   "dev": "cd frontend && npm start & cd backend && npm start",
