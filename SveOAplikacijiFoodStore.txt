@@ -1010,6 +1010,8 @@ BuildCommand npm install,npm run build
 Start command npm start
 EnvironmentVariable su .env podatci
 
+Takodje mjenjamo i package.json u backend i frontend dodajemo neke stvari za build 
+
 
 
 
