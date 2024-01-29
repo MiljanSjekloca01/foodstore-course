@@ -1,8 +1,8 @@
 {
-"name": "foodstoresrbms",
+"name": "foodms",
 "version": "1.0.0",
 "engines": {
-  "node": ">=18"
+  "node": ">=18 <=20.10.0"
 },
 "scripts": {
   "dev": "cd frontend && npm start & cd backend && npm start",
