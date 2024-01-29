@@ -1003,7 +1003,12 @@ filtriramo tacno odredjenu hranu iz baze podataka,takodje imamo i search.
 
 Render.com - GitHub repository povezivanje WebServices
 
+(dodali smo package.json u root direktorijuma)
 
+Runtime Node
+BuildCommand npm install,npm run build
+Start command npm start
+EnvironmentVariable su .env podatci
 
 
 
