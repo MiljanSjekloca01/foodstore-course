@@ -1014,5 +1014,10 @@ Takodje mjenjamo i package.json u backend i frontend dodajemo neke stvari za bui
 
 
 
+			ToDo::
+
+User id kao key u localstorage maybe za korpu.
+Posto korpa treba da bude asocirana samo na jednog usera.
+
 
 
