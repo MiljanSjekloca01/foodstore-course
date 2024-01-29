@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { USER_LOGIN_URL, USER_REGISTER_URL } from '../shared/constants/urls';
+import { USER_DELETE_URL, USER_LOGIN_URL, USER_REGISTER_URL } from '../shared/constants/urls';
 import { IUserLogin } from '../shared/interfaces/iUserLogin';
 import { User } from '../shared/models/User';
 import {ToastrService} from 'ngx-toastr';
@@ -69,6 +69,11 @@ export class UserService {      // newUser() ako ga nema u localStorage
     this.userSubject.next(new User());
     localStorage.removeItem(USER_KEY);
     window.location.reload();
+  }
+
+  // Brisanje usera,jos nedovrseno,prototip
+  delete(userId:string):Observable<any>{
+    return this.http.delete<any>(USER_DELETE_URL + userId);
   }
 
   // Local storage user

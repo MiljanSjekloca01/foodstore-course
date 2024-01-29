@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { sample_foods, sample_tags } from 'src/data';
-import { FOODS_BY_ID_URL, FOODS_BY_SEARCH_URL, FOODS_BY_TAG_URL, FOODS_TAGS_URL, FOODS_URL } from '../shared/constants/urls';
+import { FOODS_BY_ID_URL, FOODS_BY_SEARCH_URL, FOODS_BY_TAG_URL, FOODS_TAGS_URL, FOODS_URL, FOOD_CREATE_URL, FOOD_DELETE_URL, FOOD_UPDATE_URL } from '../shared/constants/urls';
 import { Food } from '../shared/models/Food';
 import { Tag } from '../shared/models/Tag';
 
@@ -38,5 +38,20 @@ export class FoodService {
   getFoodById(foodId:string): Observable<Food>{
     return this.http.get<Food>(FOODS_BY_ID_URL + foodId);
   }
- 
+
+  //Postman 
+  createFood(food:Food): Observable<Food>{
+    return this.http.post<Food>(FOOD_CREATE_URL,food);
+  }
+
+  //Trenutno Postman samo
+  updateFood(food:Food,foodId: string): Observable<any>{
+    return this.http.put<Food>(FOOD_UPDATE_URL + foodId,food)
+  };
+  
+  //Postman 
+  deleteFood(foodId: string):Observable<any>{
+    return this.http.delete<any>(FOOD_DELETE_URL + foodId);
+  }
+  
 }

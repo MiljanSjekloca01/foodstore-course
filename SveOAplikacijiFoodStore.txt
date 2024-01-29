@@ -956,6 +956,55 @@ Koristimo developer paypal personal account da napravimo payment i nakon sto to 
 orders. Dobijemo payment.id dobijemo status Payed
 
 
-				Video 24 - Nije bitno za sada pogledati.
+			Video 24 
+
+Cilj: Order Track Page 
+
+Kreiranje Order-track-Page i dodavanje u app-routing-module
+
+			
+
+
+			Objasnjeno za NoSQL.
+
+*napraviti delete hrane
+
+Na pocetku imamo home page componentu koja preko get api dobija svu hranu iz baze podataka.
+Takodje imamo getere za dobijanje searchovane hrane,hrane po tagu, takodje i kada se klikne na neku od hrana.
+
+Dobijamo Hranu preko ID na Food-PageComponenti. Takodje postoje i metode za kreiranje,updejtovanje,
+i brisanje hrane 
+
+Takodje imamo i Usere koji su upisani u bazu podataka.
+Na login imamo get na registraciju post metodu takodje imamo i delete metodu napravljenu za brisanje usera.
+
+Takodje u bazi podataka imamo i Porudzbinu to jest Order koji se kreira iz checkout forme ako je user logovan,
+Na svaki sledeci go to payment brise se onaj stari i updejtuje sa novim.
+
+I na samom kraju imamo opciju paypal placanja koji ako se plati postavlja order na placen i dobija se 
+id placanja.
+
+
+
+
+
+			Dobar dan profesore,ovako ja sam radio angular i node web aplikaciju
+sa konekcijom na mongo db, u bazi podataka imam 3 kolekcije  jedna za hranu jedna za porudzbine i jedna za 
+korisnike. Na home page preko api dobijamo sve dokumente iz kolekcije hrane onda imamo tagove preko kojih takodje
+filtriramo tacno odredjenu hranu iz baze podataka,takodje imamo i search.
+
+
+
+
+
+
+			Video 27 Publishing na Render.com
+
+
+
+
+
+
+
 
 

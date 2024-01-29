@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { sample_foods, sample_tags } from '../data';
 import asyncHandler from 'express-async-handler';
 import { FoodModel } from '../models/food.model';
+import { HTTP_BAD_REQUEST, HTTP_NOT_FOUND, HTTP_OK } from '../constants/http_status';
 // micemo /api/foods iz svih ruta
 const router = Router();
 
-// seeding, dodavanje pocetnih podataka
+// seeding, dodavanje pocetnih podataka "Primjer podataka" "Prototip podataka"
 router.get("/seed", asyncHandler(
     async (req,res) => {
         const foodsCount = await FoodModel.countDocuments();
@@ -13,6 +14,7 @@ router.get("/seed", asyncHandler(
             res.send("Seed is already done");
             return;
         }
+
         await FoodModel.create(sample_foods);
         res.send("Seed is Done!");
     }
@@ -37,7 +39,7 @@ router.get("/search/:searchTerm", asyncHandler(
 router.get("/tags", asyncHandler(
     async (req,res) => {
         const tags = await FoodModel.aggregate([
-            {
+            {   // ako imamo 2 hrane sa 3 taga dobijamo 6 hrana sa po 1 tag
                 $unwind:'$tags'
             },
             {
@@ -79,5 +81,44 @@ router.get("/:foodId",asyncHandler(
         res.send(food);
     }
 ))
+
+// Kreiranje nove hrane,Postman
+router.post("/create", asyncHandler(
+    async(req:any,res:any) => {
+        const food = req.body;
+// Food model se nece kreirati ako mu se ne daju svi parametri
+        const newFood = new FoodModel(food);
+        await newFood.save();
+        res.status(HTTP_OK).send(newFood);
+    }
+))
+
+// Updejtovanje postojece hrane Postman
+router.put("/update/:foodId",asyncHandler(
+    async(req:any,res:any) => {
+        const newFoodData = req.body;
+        const updatedFoodData = await FoodModel.findByIdAndUpdate(req.params.foodId,newFoodData);
+        
+        if(!updatedFoodData || updatedFoodData === null){
+            return res.status(HTTP_NOT_FOUND).send("Food not found");
+        }
+
+        res.status(HTTP_OK).send(updatedFoodData);
+    }
+))
+
+// Brisanje postojece hrane Postman
+router.delete("/delete/:foodId",asyncHandler(
+    async(req:any,res:any) => {
+        
+        if(!await FoodModel.findById(req.params.foodId)){
+            return res.status(HTTP_NOT_FOUND).send("User with this id not found");
+        }
+
+        await FoodModel.findByIdAndDelete(req.params.foodId);
+        res.status(HTTP_OK).send("Food deleted");
+    }
+))
+
 
 export default router;

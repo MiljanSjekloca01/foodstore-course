@@ -24,7 +24,7 @@ router.post("/login", asyncHandler(
   async (req, res) => {
     const {email, password} = req.body;
     const user = await UserModel.findOne({email});
-      
+      //Uporedjivanje sifre sa enkriptovanom sifrom
      if(user && (await bcrypt.compare(password,user.password))) {
       res.send(generateTokenReponse(user));
      }
@@ -60,6 +60,23 @@ router.post('/register', asyncHandler(
     res.send(generateTokenReponse(dbUser));
   }
 ))
+
+// Postman Prototip delete-a
+router.delete("/delete/:userId",asyncHandler(
+  async (req:any,res:any) => {
+    const userId = req.params.userId;
+    const user = await UserModel.findById(userId);
+
+    if(!user){
+      return res.status(404).send("User with this id not found");
+    }
+
+    await UserModel.findByIdAndDelete(userId);
+
+    res.send("User deleted successfully");
+  }
+))
+
 
   const generateTokenReponse = (user : User) => {
     const token = jwt.sign({
