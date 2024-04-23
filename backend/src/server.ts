@@ -21,14 +21,10 @@ app.use("/api/foods",foodRouter);
 app.use("/api/users",userRouter);
 app.use("/api/orders",orderRouter);
 
-// Serve static files iz foldera 'dist' (Angular build)
-app.use(express.static(path.join(__dirname, '../../frontend/dist/frontend')));
-
-// Za sve druge zahtjeve, šaljemo index.html
+app.use(express.static('public'));
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/dist/frontend', 'index.html'))
+    res.sendFile(path.join(__dirname,'public', 'index.html'))
 })
-
 
 // port koji koristimo,
 const port = process.env.PORT || 5000;
