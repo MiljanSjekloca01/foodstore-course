@@ -22,7 +22,7 @@ app.use("/api/foods", food_router_1.default);
 app.use("/api/users", user_router_1.default);
 app.use("/api/orders", order_router_1.default);
 // port koji koristimo,
-var port = 5000;
+var port = process.env.PORT || 5000;
 app.listen(port, function () {
     console.log("Website served on http://localhost:" + port);
 });
