@@ -7,6 +7,7 @@ import userRouter from './routers/user.router';
 import orderRouter from "./routers/order.router";
 
 import { dbConnect } from './configs/database.config';
+import path from 'path';
 dbConnect();
 
 const app = express();
@@ -19,6 +20,12 @@ app.use(cors({
 app.use("/api/foods",foodRouter);
 app.use("/api/users",userRouter);
 app.use("/api/orders",orderRouter);
+
+// Vidio kod njega
+app.use(express.static('public'));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname,'public', 'index.html'))
+})
 
 // port koji koristimo,
 const port = process.env.PORT || 5000;
