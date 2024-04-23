@@ -22,11 +22,11 @@ app.use("/api/users",userRouter);
 app.use("/api/orders",orderRouter);
 
 // Serve static files iz foldera 'dist' (Angular build)
-app.use(express.static(path.join(__dirname, '../../frontend/src')));
+app.use(express.static(path.join(__dirname, '../../frontend/dist/frontend')));
 
 // Za sve druge zahtjeve, šaljemo index.html
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../../frontend/src', 'index.html'))
+    res.sendFile(path.join(__dirname, '../../frontend/dist/frontend', 'index.html'))
 })
 
 
