@@ -2,6 +2,8 @@ import { environment } from "src/environments/environment";
 
 const BASE_URL = '';
 
+console.log(environment.production);
+
 // Food + Tags
 export const FOODS_URL = BASE_URL + "/api/foods";
 export const FOODS_TAGS_URL = FOODS_URL + "/tags";
