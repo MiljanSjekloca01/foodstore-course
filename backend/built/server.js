@@ -22,11 +22,9 @@ app.use((0, cors_1.default)({
 app.use("/api/foods", food_router_1.default);
 app.use("/api/users", user_router_1.default);
 app.use("/api/orders", order_router_1.default);
-// Serve static files iz foldera 'dist' (Angular build)
-app.use(express_1.default.static(path_1.default.join(__dirname, '../../frontend/dist/frontend')));
-// Za sve druge zahtjeve, šaljemo index.html
+app.use(express_1.default.static('public'));
 app.get('*', function (req, res) {
-    res.sendFile(path_1.default.join(__dirname, '../../frontend/dist/frontend', 'index.html'));
+    res.sendFile(path_1.default.join(__dirname, 'public', 'index.html'));
 });
 // port koji koristimo,
 var port = process.env.PORT || 5000;
