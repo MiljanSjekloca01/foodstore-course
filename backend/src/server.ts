@@ -22,9 +22,9 @@ app.use("/api/users",userRouter);
 app.use("/api/orders",orderRouter);
 
 // Vidio kod njega
-app.use(express.static('../../frontend/dist'));
+app.use(express.static('public'));
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname,'../../frontend/dist', 'index.html'))
+    res.sendFile(path.join(__dirname,'public', 'index.html'))
 })
 
 // port koji koristimo,
